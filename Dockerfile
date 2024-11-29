@@ -1,15 +1,16 @@
-FROM python:3
+# Use the official Python image
+FROM python:3.9-slim
 
-WORKDIR /data
+# Set the working directory
+WORKDIR /app
 
-RUN pip install django==3.2
-
+# Copy project files into the container
 COPY . .
 
-RUN python manage.py migrate
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000
-
-CMD ["python","manage.py","runserver","0.0.0.0:8000"]
+# Run migrations and collect static files at runtime (optional)
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
 
 
